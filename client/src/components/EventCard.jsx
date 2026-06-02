@@ -3,6 +3,7 @@ function EventCard({
   showButton,
   onBook,
   onDelete,
+  onEdit,
   admin,
 }) {
   return (
@@ -10,7 +11,29 @@ function EventCard({
 
       <div className="event-card-header">
         <h2>{event.title}</h2>
-        <span className="badge badge-accent">Event</span>
+        <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", justifyContent:"flex-end" }}>
+          {event.category && (
+            <span
+              className="badge"
+              style={{
+                background: event.category === "Tech"
+                  ? "rgba(124,92,252,0.15)"
+                  : event.category === "Non-Tech"
+                  ? "rgba(245,158,11,0.15)"
+                  : "rgba(45,212,168,0.15)",
+                color: event.category === "Tech"
+                  ? "#7c5cfc"
+                  : event.category === "Non-Tech"
+                  ? "#f59e0b"
+                  : "#2dd4a8",
+              }}
+            >
+              {event.category === "Tech" ? "💻 Tech"
+                : event.category === "Non-Tech" ? "🎨 Non-Tech"
+                : "🛠️ Workshop"}
+            </span>
+          )}
+        </div>
       </div>
 
       <p className="event-description">{event.description}</p>
@@ -18,8 +41,14 @@ function EventCard({
       <div className="event-details">
         <div className="info-row">
           <span className="info-label">Date</span>
-          <span className="info-value">{event.date}</span>
+          <span className="info-value">{event.date ? event.date.split("T")[0] : "—"}</span>
         </div>
+        {event.time && (
+          <div className="info-row">
+            <span className="info-label">Time</span>
+            <span className="info-value">{event.time}</span>
+          </div>
+        )}
         <div className="info-row">
           <span className="info-label">Venue</span>
           <span className="info-value">{event.venue}</span>
@@ -28,6 +57,14 @@ function EventCard({
           <span className="info-label">Seats</span>
           <span className="info-value">{event.totalSeats}</span>
         </div>
+        {event.fee !== undefined && event.fee !== null && (
+          <div className="info-row">
+            <span className="info-label">Fee</span>
+            <span className="info-value">
+              {event.fee === 0 || event.fee === "0" ? "Free" : `₹${event.fee}`}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="event-actions">
@@ -38,12 +75,20 @@ function EventCard({
         )}
 
         {admin && (
-          <button
-            className="btn-danger"
-            onClick={() => onDelete(event.id)}
-          >
-            Delete
-          </button>
+          <>
+            <button
+              className="btn-outline"
+              onClick={() => onEdit(event)}
+            >
+              ✏️ Edit
+            </button>
+            <button
+              className="btn-danger"
+              onClick={() => onDelete(event.id)}
+            >
+              Delete
+            </button>
+          </>
         )}
       </div>
 

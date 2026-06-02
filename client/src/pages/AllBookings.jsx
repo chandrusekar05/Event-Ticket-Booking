@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 import Navbar from "../components/Navbar";
 
@@ -17,8 +17,8 @@ function AllBookings() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        "http://localhost:5000/api/bookings/admin/bookings",
+      const res = await api.get(
+        "/api/bookings/admin/bookings",
         {
           headers: {
             authorization: token,

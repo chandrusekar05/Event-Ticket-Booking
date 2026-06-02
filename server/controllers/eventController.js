@@ -1,22 +1,24 @@
 const db = require("../config/db");
 
+const VALID_CATEGORIES = ["Tech", "Non-Tech", "Workshop"];
+
 
 // ================= ADD EVENT =================
 
 exports.createEvent = (req, res) => {
   try {
-    const { title, description, date, venue, totalSeats } = req.body;
+    const { title, description, date, time, venue, totalSeats, fee, category } = req.body;
+
+    const cat = VALID_CATEGORIES.includes(category) ? category : "Tech";
 
     const query =
-      "INSERT INTO events(title,description,date,venue,totalSeats) VALUES(?,?,?,?,?)";
+      "INSERT INTO events(title,description,date,time,venue,totalSeats,fee,category) VALUES(?,?,?,?,?,?,?,?)";
 
     db.query(
       query,
-      [title, description, date, venue, totalSeats],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json(err);
-        }
+      [title, description, date, time || null, venue, totalSeats, fee || 0, cat],
+      (err) => {
+        if (err) return res.status(500).json(err);
 
         res.status(201).json({
           success: true,
@@ -37,10 +39,7 @@ exports.getEvents = (req, res) => {
     const query = "SELECT * FROM events ORDER BY date ASC";
 
     db.query(query, (err, result) => {
-      if (err) {
-        return res.status(500).json(err);
-      }
-
+      if (err) return res.status(500).json(err);
       res.status(200).json(result);
     });
   } catch (error) {
@@ -55,18 +54,18 @@ exports.updateEvent = (req, res) => {
   try {
     const { id } = req.params;
 
-    const { title, description, date, venue, totalSeats } = req.body;
+    const { title, description, date, time, venue, totalSeats, fee, category } = req.body;
+
+    const cat = VALID_CATEGORIES.includes(category) ? category : "Tech";
 
     const query =
-      "UPDATE events SET title=?, description=?, date=?, venue=?, totalSeats=? WHERE id=?";
+      "UPDATE events SET title=?, description=?, date=?, time=?, venue=?, totalSeats=?, fee=?, category=? WHERE id=?";
 
     db.query(
       query,
-      [title, description, date, venue, totalSeats, id],
-      (err, result) => {
-        if (err) {
-          return res.status(500).json(err);
-        }
+      [title, description, date, time || null, venue, totalSeats, fee || 0, cat, id],
+      (err) => {
+        if (err) return res.status(500).json(err);
 
         res.status(200).json({
           success: true,
@@ -88,10 +87,8 @@ exports.deleteEvent = (req, res) => {
 
     const query = "DELETE FROM events WHERE id=?";
 
-    db.query(query, [id], (err, result) => {
-      if (err) {
-        return res.status(500).json(err);
-      }
+    db.query(query, [id], (err) => {
+      if (err) return res.status(500).json(err);
 
       res.status(200).json({
         success: true,

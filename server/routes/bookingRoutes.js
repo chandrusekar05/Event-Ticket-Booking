@@ -6,6 +6,8 @@ const {
   bookEvent,
   myBookings,
   allBookings,
+  markAttendance,
+  getStats,
 } = require("../controllers/bookingController");
 
 const {
@@ -37,5 +39,24 @@ router.get(
   isAdmin,
   allBookings
 );
+
+
+// MARK ATTENDANCE
+router.post(
+  "/mark-attendance",
+  verifyToken,
+  isAdmin,
+  markAttendance
+);
+
+
+// ADMIN STATS
+router.get(
+  "/admin/stats",
+  verifyToken,
+  isAdmin,
+  getStats
+);
+
 
 module.exports = router;

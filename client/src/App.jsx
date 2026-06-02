@@ -9,6 +9,7 @@ import CreateEvent from "./pages/CreateEvent";
 import MyTickets from "./pages/MyTickets";
 import ManageEvents from "./pages/ManageEvents";
 import AllBookings from "./pages/AllBookings";
+import MarkAttendance from "./pages/MarkAttendance";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
         <Route path="/manage-events" element={<ManageEvents />} />
 
         <Route path="/all-bookings" element={<AllBookings />} />
+
+        <Route path="/mark-attendance" element={<MarkAttendance />} />
 
       </Routes>
 

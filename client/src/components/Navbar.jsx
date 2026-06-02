@@ -20,6 +20,7 @@ function Navbar() {
       <div className="navbar-inner">
 
         <Link to={user?.role === "admin" ? "/admin" : "/student"} className="navbar-brand">
+          <span className="brand-dot">●</span>
           <span className="brand-text">CampusPass</span>
         </Link>
 
@@ -28,7 +29,7 @@ function Navbar() {
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
-          {mobileOpen ? "Close" : "Menu"}
+          {mobileOpen ? "✕" : "☰"}
         </button>
 
         <div className={`navbar-links ${mobileOpen ? "navbar-links-open" : ""}`}>
@@ -60,15 +61,7 @@ function Navbar() {
                 className={`nav-link ${isActive("/admin") ? "nav-link-active" : ""}`}
                 onClick={() => setMobileOpen(false)}
               >
-                Dashboard
-              </Link>
-
-              <Link
-                to="/create-event"
-                className={`nav-link ${isActive("/create-event") ? "nav-link-active" : ""}`}
-                onClick={() => setMobileOpen(false)}
-              >
-                Create Event
+                Overview
               </Link>
 
               <Link
@@ -85,6 +78,14 @@ function Navbar() {
                 onClick={() => setMobileOpen(false)}
               >
                 Bookings
+              </Link>
+
+              <Link
+                to="/mark-attendance"
+                className={`nav-link ${isActive("/mark-attendance") ? "nav-link-active" : ""}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                Mark Attendance
               </Link>
             </>
           )}
@@ -105,7 +106,7 @@ function Navbar() {
 
       <style>{`
         .navbar {
-          background: rgba(10, 10, 15, 0.85);
+          background: rgba(10, 10, 15, 0.88);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid var(--border);
@@ -128,11 +129,17 @@ function Navbar() {
         .navbar-brand {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
+        }
+
+        .brand-dot {
+          color: var(--accent);
+          font-size: 10px;
+          line-height: 1;
         }
 
         .brand-text {
-          font-size: 20px;
+          font-size: 19px;
           font-weight: 700;
           color: var(--text-primary);
           letter-spacing: -0.02em;
@@ -141,16 +148,17 @@ function Navbar() {
         .navbar-links {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 2px;
         }
 
         .nav-link {
-          padding: 8px 16px;
-          font-size: 14px;
+          padding: 7px 14px;
+          font-size: 13.5px;
           font-weight: 500;
           color: var(--text-secondary);
           border-radius: var(--radius-sm);
           transition: all var(--transition-fast);
+          white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -170,9 +178,9 @@ function Navbar() {
 
         .nav-separator {
           width: 1px;
-          height: 24px;
+          height: 22px;
           background: var(--border);
-          margin: 0 8px;
+          margin: 0 6px;
         }
 
         .nav-user {
@@ -191,8 +199,8 @@ function Navbar() {
           background: transparent;
           color: var(--text-secondary);
           border: 1px solid var(--border);
-          padding: 6px 14px;
-          font-size: 13px;
+          padding: 6px 12px;
+          font-size: 16px;
           border-radius: var(--radius-sm);
         }
 
@@ -202,7 +210,7 @@ function Navbar() {
           transform: none;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .mobile-toggle {
             display: block;
           }

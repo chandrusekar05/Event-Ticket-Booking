@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
@@ -40,8 +40,8 @@ function CreateEvent() {
 
       const token = localStorage.getItem("token");
 
-      await axios.post(
-        "http://localhost:5000/api/events/create",
+      await api.post(
+        "/api/events/create",
         formData,
         {
           headers: {
